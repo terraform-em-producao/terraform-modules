@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  modulos:
+    runs-on: ubuntu-latest
+    outputs:
+      lista: ${{ steps.lista.outputs.lista }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: lista
+        run: echo "lista=$(ls -d modules/*/ | sed 's:/$::' | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  terraform:
+    needs: modulos
+    uses: terraform-em-producao/.github/.github/workflows/terraform-ci.yml@v1
+    with:
+      diretorios: ${{ needs.modulos.outputs.lista }}
+      rodar_testes: true
