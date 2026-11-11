@@ -1,5 +1,5 @@
 # Bucket S3 com os padrões da org já aplicados: sem acesso público, sem ACL,
-# criptografado, só TLS. Quem usa o módulo não precisa lembrar de nada disso.
+# criptografado, só TLS. Quem usa o módulo não precisa lembrar de nada disso (ver tests/).
 
 resource "aws_s3_bucket" "this" {
   bucket        = var.nome
